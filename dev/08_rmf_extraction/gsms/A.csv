@@ -1,0 +1,3 @@
+,MC_frame,rmf_frame_index,Total_Score,XLs_sum,XLs_psi_sum,EV_sum,EM3D_BayesianEM,EM3D_sigma_BayesianEM,traj,rmf3_file,DR_sum,half,cluster,frame_RMF3
+25477,25477.0,7720.0,1078.7197180514945,15.638929236297216,-1.3862943611198906,186.27337223869964,806.9699227745417,1.0,output_0,/wynton/group/sali/mhancock/mtorc2/samples/exp_14/125/sample/output.1972457/output_0/rmfs/3.rmf3,0.0,A,1,h1_output_47_25477.rmf3
+13824,13824.0,1763.0,1073.1296575675626,16.35823898298256,-1.3862943611198906,182.86768281932072,807.2867013622628,1.0,output_9,/wynton/group/sali/mhancock/mtorc2/samples/exp_14/125/sample/output.1972457/output_9/rmfs/5.rmf3,0.0,A,1,h1_output_69_13824.rmf3

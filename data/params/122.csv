@@ -1,0 +1,11 @@
+name,subunit,color,rb_start,rb_end,pdb_file,start_pdb,end_pdb,offset,rb_trans,rb_rot,pdb_chain,model_chain
+MTOR,MTOR,blue,1,2549,em/models/J252/mtorc2_J252.pdb,1,2549,0,0,0,A,A
+RICTOR,RICTOR,green,1,1708,em/models/J252/mtorc2_J252.pdb,1,1708,0,0,0,E,B
+MLST8,MLST8,yellow,1,326,em/models/J252/mtorc2_J252.pdb,1,326,0,0,0,C,C
+MSIN1,MSIN1,red,1,155,em/models/J252/mtorc2_J252.pdb,1,155,0,0,0,G,D
+CRIM,MSIN1,red,156,279,em/models/J252/mSIN1_CRIM_AF-Q9BPZ7-F1_conf02.pdb,156,267,0,5,1,A,D
+RBD,MSIN1,red,280,380,pdb/7lc1.pdb,280,353,0,5,1,B,D
+MSIN1PH,MSIN1,red,381,522,pdb/7lc1.pdb,381,481,0,5,1,B,D
+AKT1PH,AKT1,purple,1,145,pdb/akt1_af.pdb,1,123,0,5,1,H,E
+KINASEN,AKT1,purple,146,229,em/models/J252/AKT1_N-lobe_AF-P31749-F1_conf02.pdb,146,229,0,5,1,A,E
+KINASEC,AKT1,purple,230,410,em/models/J252/AKT1_C-lobe_AF-P31749-F1_conf02.pdb,230,410,0,5,1,A,E

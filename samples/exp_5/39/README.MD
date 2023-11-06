@@ -1,0 +1,1 @@
+Same dimer representation as 38. Add crystal structure for joint RBD-PH rigid body. Remove artefactual RICTOR-AKT and MTOR-AKT XLs.  

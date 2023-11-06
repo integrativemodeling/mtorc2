@@ -1,0 +1,1 @@
+density_custom_ranges={"CRIM":["CRIM"],"RBD":["RBD"],"MSIN1PH":["MSIN1PH"],"KINASE":["KINASE"],"AKT1PH":["AKT1PH"],"Rigid_Body":["MTOR", "RICTOR", "MSIN1", "MLST8"]}

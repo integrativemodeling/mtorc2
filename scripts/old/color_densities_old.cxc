@@ -1,0 +1,11 @@
+transparency #* 50 surfaces
+color #*.1 plum surfaces
+color #*.2 aquamarine surfaces
+color #*.3 pale green surfaces
+color #*.4 powder blue surfaces
+color #*.5 indian red
+color #*.6 salmon surfaces
+color #*.7 light salmon surfaces
+color #*.8 khaki surfaces
+color #*.9 light slate gray surfaces
+volume #* level 0.025

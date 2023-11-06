@@ -1,0 +1,8 @@
+color /A/F #248AD0
+color /B/G #478C23
+color /C/H #fdc846
+color /D/I #FB1E20
+color /E:1-144/J:1-144 #796791
+color /E:145-end/J:145-end #CC8FBA
+size :BEA ballScale 3
+cartoon style modeHelix tube

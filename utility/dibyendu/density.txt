@@ -1,0 +1,2 @@
+density_custom_ranges={"Abeta":['Abeta'],"TREM2":['TREM2']}
+#density_custom_ranges={"TREM2":['TREM2']}
