@@ -1,0 +1,10 @@
+.vscode
+**/.DS_Store
+.DS_Store
+*/.DS_Store
+
+**/tmp
+tmp/*
+data/em/**
+data/final_models/**
+dev/07_em_score/**
