@@ -5,6 +5,7 @@
 
 **/tmp
 tmp/*
-data/em/**
+data/em/maps/**
+data/em/comps/**
 data/final_models/**
 dev/07_em_score/**
