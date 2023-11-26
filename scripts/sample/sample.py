@@ -27,27 +27,25 @@ import IMP.pmi.macros
 
 sys.path.append(str(Path(Path.home(), "mtorc2/src")))
 import params
-# sys.path.append("/wynton/home/sali/mhancock/mtorc2/src")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--output_dir", type=str, required=True)
     parser.add_argument("--param_file", type=str, required=True)
-    parser.add_argument("--em_comps", type=str, required=True)
     parser.add_argument("--res_per_comp", type=int, required=True)
     parser.add_argument("--flex", type=int, required=True)
-    parser.add_argument("--sym", type=str, required=True)
-    parser.add_argument("--xls", type=str, required=True)
-    parser.add_argument("--map", type=str, required=True)
+    parser.add_argument("--sym", type=int, required=True)
+    parser.add_argument("--xls", type=str)
+    parser.add_argument("--map", type=str)
     parser.add_argument("--em_w", type=int, required=True)
+    parser.add_argument("--ev", type=int, required=True)
+    parser.add_argument("--conn", type=int, required=True)
     parser.add_argument("--shuffle", type=int, required=True)
     parser.add_argument("--n_frames", type=int, required=True)
     args = parser.parse_args()
 
     params.write_params(vars(args), Path(args.output_dir, "params.txt"))
-
-    em_comps = args.em_comps.split(",")
 
     m = IMP.Model()
     s = IMP.pmi.topology.System(m)
@@ -64,11 +62,8 @@ if __name__ == "__main__":
     clones = dict()
     mols = dict()
     subunits = list(set(param_df["subunit"]))
-    # subunits = ["MTOR", "RICTOR", "MLST8", "MSIN1", "AKT1"]
     for subunit in subunits:
         print(subunit)
-        # pdb_file, chain, color, clone_chain = structures[component]
-
         subunit_row_ids = list(param_df[param_df["subunit"] == subunit].index)
         color = param_df.iloc[subunit_row_ids[0], param_df.columns.get_loc("color")]
         chain = param_df.iloc[subunit_row_ids[0], param_df.columns.get_loc("model_chain")]
@@ -83,14 +78,14 @@ if __name__ == "__main__":
         print(subunit_row_ids)
         for row_id in subunit_row_ids:
             name = param_df.iloc[row_id, param_df.columns.get_loc("name")]
-            pdb_file = param_df.iloc[row_id, param_df.columns.get_loc("pdb_file")]
-            pdb_file = Path(glob_data_dir, pdb_file)
+            pdb_file = Path(param_df.iloc[row_id, param_df.columns.get_loc("pdb_file")])
             pdb_chain = param_df.iloc[row_id, param_df.columns.get_loc("pdb_chain")]
             start_pdb = param_df.iloc[row_id, param_df.columns.get_loc("start_pdb")]
             end_pdb = param_df.iloc[row_id, param_df.columns.get_loc("end_pdb")]
             offset = param_df.iloc[row_id, param_df.columns.get_loc("offset")]
+            em_prefix = param_df.iloc[row_id, param_df.columns.get_loc("em_prefix")]
 
-            print(name, pdb_file, pdb_chain, start_pdb, end_pdb, offset)
+            print(name, pdb_file, pdb_chain, start_pdb, end_pdb, offset, em_prefix)
             atom_res = mol.add_structure(
                 pdb_fn=str(pdb_file),
                 chain_id=pdb_chain,
@@ -100,11 +95,11 @@ if __name__ == "__main__":
                 model_num=1
             )
 
-            if name in em_comps:
+            if type(em_prefix) == str:
                 mol.add_representation(
                     residues=atom_res,
                     density_residues_per_component=int(args.res_per_comp),
-                    density_prefix=name,
+                    density_prefix=str(em_prefix),
                     density_force_compute=False,
                     resolutions=[1,10],
                     color=color
@@ -123,6 +118,7 @@ if __name__ == "__main__":
                 print(flex_res)
             else:
                 flex_res = list(mol.get_non_atomic_residues())
+
             mol.add_representation(
                 flex_res,
                 resolutions=[10],
@@ -134,7 +130,9 @@ if __name__ == "__main__":
         print(subunit, len(mol.get_atomic_residues()))
         print(subunit, len(mol.get_non_atomic_residues()))
 
+        print(args.sym, type(args.sym))
         if args.sym:
+            print("CREATING CLONE")
             clone = mol.create_clone(
                 chain_id=chr(ord(chain) + 5)
             )
@@ -186,13 +184,14 @@ if __name__ == "__main__":
 
     # CONNECTIVITY
     output_objects = []
-    for subunit in subunits:
-        cr = IMP.pmi.restraints.stereochemistry.ConnectivityRestraint(
-            objects=mols[subunit],
-            resolution=1
-        )
-        cr.add_to_model()
-        output_objects.append(cr)
+    if args.conn:
+        for subunit in subunits:
+            cr = IMP.pmi.restraints.stereochemistry.ConnectivityRestraint(
+                objects=mols[subunit],
+                resolution=1
+            )
+            cr.add_to_model()
+            output_objects.append(cr)
 
     # EXCLUDED VOLUME
     ev_objects = list()
@@ -202,12 +201,13 @@ if __name__ == "__main__":
         if args.sym:
             ev_objects.append(clones[subunit])
 
-    ev_r = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(
-        included_objects=ev_objects,
-        resolution=10
-    )
-    ev_r.add_to_model()
-    output_objects.append(ev_r)
+    if args.ev:
+        ev_r = IMP.pmi.restraints.stereochemistry.ExcludedVolumeSphere(
+            included_objects=ev_objects,
+            resolution=10
+        )
+        ev_r.add_to_model()
+        output_objects.append(ev_r)
 
     # SYMMETRY
     center = IMP.algebra.Vector3D([166.9824, 166.9824, 166.9824])
@@ -225,8 +225,6 @@ if __name__ == "__main__":
     m.update()
 
     # XLS
-    xls = args.xls.split(",")
-
     xl_dir = Path(Path.home(), "mtorc2/data/xlms/csvs")
     xldbkwc = IMP.pmi.io.crosslink.CrossLinkDataBaseKeywordsConverter()
     xldbkwc.set_protein1_key("prot1")
@@ -236,31 +234,33 @@ if __name__ == "__main__":
 
     xldb = IMP.pmi.io.crosslink.CrossLinkDataBase(xldbkwc)
 
-    for xl in xls:
-        xl, xl_w, xl_type = xl.split(":")
-        xl_file = Path(xl_dir, xl+".csv")
-        xldb.create_set_from_file(str(xl_file))
+    if args.xls:
+        xls = args.xls.split(",")
+        for xl in xls:
+            xl, xl_w, xl_type = xl.split(":")
+            xl_file = Path(xl_dir, xl+".csv")
+            xldb.create_set_from_file(str(xl_file))
 
-        if xl_type == "DSS":
-            linker = ihm.cross_linkers.dss
-            length = 35
-        elif xl_type == "EDC":
-            linker = ihm.cross_linkers.edc
-            length = 16
+            if xl_type == "DSS":
+                linker = ihm.cross_linkers.dss
+                length = 35
+            elif xl_type == "EDC":
+                linker = ihm.cross_linkers.edc
+                length = 16
 
-        xl_r = IMP.pmi.restraints.crosslinking.CrossLinkingMassSpectrometryRestraint(
-            root_hier=root_hier,
-            database=xldb,
-            length=length,
-            slope=0.01,
-            resolution=1.,
-            label=type,
-            linker=linker,
-            weight=float(xl_w)
-        )
+            xl_r = IMP.pmi.restraints.crosslinking.CrossLinkingMassSpectrometryRestraint(
+                root_hier=root_hier,
+                database=xldb,
+                length=length,
+                slope=0.01,
+                resolution=1.,
+                label=type,
+                linker=linker,
+                weight=float(xl_w)
+            )
 
-        xl_r.add_to_model()
-        output_objects.append(xl_r)
+            xl_r.add_to_model()
+            output_objects.append(xl_r)
 
     # EM
     if args.map:
@@ -269,11 +269,13 @@ if __name__ == "__main__":
             representation_type=IMP.atom.DENSITIES,
             copy_index=0
         )
+
         densities = sel.get_selected_particles()
         gem = IMP.bayesianem.restraint.GaussianEMRestraintWrapper(
             densities,
             target_fn=str(args.map),
             scale_target_to_mass=True,
+            # target_mass=25008.40380000003,
             slope=0.01,
             target_radii_scale=3.0,
             target_is_rigid_body=False,
@@ -284,13 +286,13 @@ if __name__ == "__main__":
         output_objects.append(gem)
 
     # SHUFFLE
-    excluded_rbs = list()
-    excluded_rbs.extend(rbs["MTOR"])
-    excluded_rbs.extend(rbs["RICTOR"])
-    excluded_rbs.extend(rbs["MLST8"])
-    excluded_rbs.extend(rbs["MSIN1"][:2])
-
     if args.shuffle:
+        excluded_rbs = list()
+        excluded_rbs.extend(rbs["MTOR"])
+        excluded_rbs.extend(rbs["RICTOR"])
+        excluded_rbs.extend(rbs["MLST8"])
+        excluded_rbs.extend(rbs["MSIN1"][:2])
+
         IMP.pmi.tools.shuffle_configuration(
             objects=root_hier,
             excluded_rigid_bodies=excluded_rbs,
@@ -300,6 +302,7 @@ if __name__ == "__main__":
             cutoff=10,
             niterations=25
         )
+
     print("Start optimization")
     dof.optimize_flexible_beads(100)
 
