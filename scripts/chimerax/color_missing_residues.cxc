@@ -1,0 +1,9 @@
+color #1 gray
+color /A:BEA/F:BEA #4682B4
+color /B:BEA/G:BEA #188953
+color /C:BEA/H:BEA #E5AC00
+color /D:BEA/I:BEA #C73131
+color /D:278-end/I:278-end #C73131
+color /E:1-143/J:1-143 #B55B9D
+size :BEA ballScale 3
+cartoon style modeHelix tube

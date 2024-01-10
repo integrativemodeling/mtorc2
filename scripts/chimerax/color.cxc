@@ -1,8 +1,10 @@
-color /A/F #248AD0
-color /B/G #478C23
-color /C/H #fdc846
-color /D/I #FB1E20
-color /E:1-144/J:1-144 #796791
-color /E:145-end/J:145-end #CC8FBA
-size :BEA ballScale 3
+color /A/F #4682B4
+color /B/G #188953
+color /C/H #E5AC00
+color /D/I #C73131
+color /E:1-143/J:1-143 #8B78A8
+color /E:144-233/J:144-233 #E3A6D0
+color /E:234-end/J:234-end #B55B9D
+
+size :BEA ballScale 2.5
 cartoon style modeHelix tube

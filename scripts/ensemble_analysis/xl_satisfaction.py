@@ -252,83 +252,77 @@ def xl_satisfaction_cluster(
 
 
 if __name__ == "__main__":
-    exp_dir = "exp_14/126"
-    analysis_id = "0"
-    hdbscan_cluster = "2"
-    sampcon_id = "3"
-    gsms_folder = "5000R"
-    clusters = [0]
+    # exp_dir = "exp_14/126"
+    # analysis_id = "0"
+    # hdbscan_cluster = "2"
+    # sampcon_id = "3"
+    # gsms_folder = "5000R"
+    # clusters = [0]
 
-    home_dir = Path("/wynton/group/sali/mhancock")
-    sampcon_dir = Path(home_dir, "mtorc2/samples", exp_dir, "analysis", analysis_id, "sampcon_{}".format(hdbscan_cluster))
-    if sampcon_id:
-        sampcon_job_dir = Path(sampcon_dir, sampcon_id)
-    else:
-        sampcon_job_dir = None
-    gsms_dir = Path(sampcon_dir, "gsms", gsms_folder)
+    # home_dir = Path("/wynton/group/sali/mhancock")
+    # sampcon_dir = Path(home_dir, "mtorc2/samples", exp_dir, "analysis", analysis_id, "sampcon_{}".format(hdbscan_cluster))
+    # if sampcon_id:
+    #     sampcon_job_dir = Path(sampcon_dir, sampcon_id)
+    # else:
+    #     sampcon_job_dir = None
+    # gsms_dir = Path(sampcon_dir, "gsms", gsms_folder)
 
     xl_files = list()
-    # xl_files.append((Path(Path.home(), "mtorc2/data/xlms/81.csv"), "dss", 35))
-    # xl_files.append((Path(Path.home(), "mtorc2/data/xlms/A.csv"), "dss", 35))
-    # xl_files.append((Path(Path.home(), "mtorc2/data/xlms/B.csv"), "dss", 35))
     xl_files.append((Path(Path.home(), "mtorc2/data/xlms/csvs/dss.csv"), "dss", 35))
     xl_files.append((Path(Path.home(), "mtorc2/data/xlms/csvs/edc.csv"), "edc", 16))
 
-    for cluster in clusters:
-        if cluster != "all":
-            cluster_dir = Path(sampcon_job_dir, "cluster.{}".format(cluster))
-            print(cluster_dir)
-        else:
-            cluster_dir = None
+    sampcon_job_dir = Path("/wynton/group/sali/mhancock/mtorc2/analysis/136/2/sampcon_-1/1")
+    cluster = 0
+    cluster_dir = Path(sampcon_job_dir, "cluster.{}".format(cluster))
 
-        frames = list()
-        for file, type, cutoff in xl_files:
-            tmp_df = pd.read_csv(file)
-            tmp_df["type"] = type
-            tmp_df["cutoff"] = cutoff
-            frames.append(tmp_df)
+    gsms_dir = Path("/wynton/group/sali/mhancock/mtorc2/analysis/136/2/sampcon_-1/gsms/1000R")
 
-        xl_df = pd.concat(frames)
-        xl_df["sat"] = 0
-        xl_df["min_dist"] = 1000
-        xl_df["ambig"] = 0
-        xl_df["frame"] = -1
-        xl_df = xl_df.drop(columns=["Unnamed: 0"])
+    frames = list()
+    for file, type, cutoff in xl_files:
+        tmp_df = pd.read_csv(file)
+        tmp_df["type"] = type
+        tmp_df["cutoff"] = cutoff
+        frames.append(tmp_df)
 
-        # print(xl_df.columns)
+    xl_df = pd.concat(frames)
+    xl_df["sat"] = 0
+    xl_df["min_dist"] = 1000
+    xl_df["ambig"] = 0
+    xl_df["frame"] = -1
+    xl_df = xl_df.drop(columns=["Unnamed: 0"])
 
-        rows = list()
-        for i in range(len(xl_df)):
-            prot1, res1, prot2, res2 = xl_df.iloc[i,0:4]
-            rows.append(i)
+    rows = list()
+    for i in range(len(xl_df)):
+        prot1, res1, prot2, res2 = xl_df.iloc[i,0:4]
+        rows.append(i)
 
-        xl_df = xl_df.iloc[rows]
-        xl_df.reset_index(
-            inplace=True,
-            drop=True
-        )
+    xl_df = xl_df.iloc[rows]
+    xl_df.reset_index(
+        inplace=True,
+        drop=True
+    )
 
-        for i in range(len(xl_df)):
-            prot1, res1, prot2, res2, type, cutoff = xl_df.iloc[i,0:6]
-            print(prot1, res1, prot2, res2, type, cutoff)
+    for i in range(len(xl_df)):
+        prot1, res1, prot2, res2, type, cutoff = xl_df.iloc[i,0:6]
+        print(prot1, res1, prot2, res2, type, cutoff)
 
-        xl_df = xl_satisfaction_cluster(
-            sampcon_job_dir=sampcon_job_dir,
-            cluster=cluster,
-            gsms_dir=gsms_dir,
+    xl_df = xl_satisfaction_cluster(
+        sampcon_job_dir=sampcon_job_dir,
+        cluster=cluster,
+        gsms_dir=gsms_dir,
+        xl_df=xl_df
+    )
+
+    if cluster_dir:
+        rmf_file = Path(cluster_dir, "cluster_center_model.rmf3")
+        xl_file = Path(cluster_dir, "xls.csv")
+
+        # If testing against a cluster, need to check the centroid structure for ambiguous xl distances for visualization.
+        xl_df = check_ambiguity(
+            rmf_file=rmf_file,
             xl_df=xl_df
         )
+    else:
+        xl_file = Path(gsms_dir, "xls.csv")
 
-        if cluster_dir:
-            rmf_file = Path(cluster_dir, "cluster_center_model.rmf3")
-            xl_file = Path(cluster_dir, "xls.csv")
-
-            # If testing against a cluster, need to check the centroid structure for ambiguous xl distances for visualization.
-            xl_df = check_ambiguity(
-                rmf_file=rmf_file,
-                xl_df=xl_df
-            )
-        else:
-            xl_file = Path(gsms_dir, "xls.csv")
-
-        xl_df.to_csv(xl_file)
+    xl_df.to_csv(xl_file)

@@ -7,5 +7,6 @@
 tmp/*
 data/em/maps/**
 data/em/comps/**
-data/final_models/**
+data/models/**
 dev/07_em_score/**
+.DS_Store

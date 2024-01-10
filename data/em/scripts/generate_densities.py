@@ -1,4 +1,6 @@
 from pathlib import Path
+import pandas as pd
+
 import IMP
 import IMP.pmi
 import IMP.pmi.topology
@@ -19,18 +21,19 @@ def get_densities(
     st = s.create_state()
 
     subunits = ["MSIN1", "AKT1"]
-    structures = dict()
-    pdb_dir = Path(glob_data_dir, "em/models/J252")
-    structures["MSIN1"] = list()
-    structures["MSIN1"].append((Path(pdb_dir, "mSIN1_CRIM_AF-Q9BPZ7-F1_conf02.pdb"), "A", "red", 158, 267, 158, 267, 0, "CRIM"))
-    structures["AKT1"] = list()
-    structures["AKT1"].append((Path(pdb_dir, "AKT1_N-lobe_AF-P31749-F1_conf02.pdb"), "A", "purple", 146, 229, 146, 229, 0, "KINASEN"))
-    structures["AKT1"].append((Path(pdb_dir, "AKT1_C-lobe_AF-P31749-F1_conf02.pdb"), "A", "purple", 230, 480, 234, 425, 0, "KINASEC"))
+
+    param_df = pd.read_csv(Path(Path.home(), "mtorc2/data/params/130.csv"))
 
     mols = dict()
     chain = "A"
+
+    subunits = ["MSIN1", "AKT1"]
     for subunit in subunits:
         print(subunit)
+
+        subunit_row_ids = list(param_df[param_df["subunit"] == subunit].index)
+        color = param_df.iloc[subunit_row_ids[0], param_df.columns.get_loc("color")]
+        chain = param_df.iloc[subunit_row_ids[0], param_df.columns.get_loc("model_chain")]
 
         mol = st.create_molecule(
             name=subunit,
@@ -39,31 +42,38 @@ def get_densities(
         )
         mols[subunit] = mol
 
-        for file, struct_chain, color, start, end, start_struct, end_struct, offset, prefix in structures[subunit]:
-            print(file, struct_chain, color)
+        print(subunit_row_ids)
+        for row_id in subunit_row_ids:
+            name = param_df.iloc[row_id, param_df.columns.get_loc("name")]
+            pdb_file = param_df.iloc[row_id, param_df.columns.get_loc("pdb_file")]
+            pdb_file = Path(glob_data_dir, pdb_file)
+            pdb_chain = param_df.iloc[row_id, param_df.columns.get_loc("pdb_chain")]
+            start_pdb = param_df.iloc[row_id, param_df.columns.get_loc("start_pdb")]
+            end_pdb = param_df.iloc[row_id, param_df.columns.get_loc("end_pdb")]
+            offset = param_df.iloc[row_id, param_df.columns.get_loc("offset")]
+
             atom_res = mol.add_structure(
-                pdb_fn=str(file),
-                chain_id=struct_chain,
+                pdb_fn=str(pdb_file),
+                chain_id=pdb_chain,
                 soft_check=True,
-                res_range=(start_struct, end_struct),
+                res_range=(start_pdb, end_pdb),
                 offset=offset,
                 model_num=1
             )
 
-            if prefix:
-                density_prefix = Path(comps_dir, prefix)
+            if name in ["CRIM", "KINASEN", "KINASEC"]:
+                density_prefix = Path(comps_dir, name)
                 mol.add_representation(
                     residues=atom_res,
                     density_residues_per_component=res_per_comp,
-                    density_prefix=str(density_prefix),
-                    density_force_compute=True,
-                    resolutions=[1,res_per_comp,10],
+                    density_prefix=density_prefix,
+                    density_force_compute=False,
+                    resolutions=[1,10],
                     color=color
                 )
-
             else:
                 mol.add_representation(
-                    residues=mol.get_atomic_residues(),
+                    residues=atom_res,
                     resolutions=[1,10],
                     color=color
                 )

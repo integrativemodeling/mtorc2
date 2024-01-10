@@ -15,7 +15,6 @@ import multiprocessing
 
 
 def get_ps(rmf_file, frame_num):
-    included_objects = list()
     fh = RMF.open_rmf_file_read_only(str(rmf_file))
     m = IMP.Model()
     h = IMP.rmf.create_hierarchies(fh, m)[0]
@@ -63,11 +62,12 @@ def calculate_distances(
 
 
 if __name__ == "__main__":
-    gsms_dir = Path("/wynton/group/sali/mhancock/mtorc2/samples/exp_14/126/analysis/0/sampcon_2/gsms/5000R")
+    gsms_dir = Path("/wynton/group/sali/mhancock/mtorc2/analysis/136/2/sampcon_-1/gsms/1000R")
     cluster = 0
-    job_dir = Path(Path.home(), "mtorc2/manuscript/submission_2/models/126_0_2_3")
+    job_dir = Path("/wynton/group/sali/mhancock/mtorc2/analysis/136/2/sampcon_-1/1")
     cluster_dir = Path(job_dir, "cluster.{}".format(cluster))
-    ref_rmf = Path(job_dir, "cluster.0/cluster_center_model.rmf3")
+
+    ref_rmf = Path(cluster_dir, "cluster_center_model.rmf3")
 
     with open(Path(gsms_dir, "A.txt"), 'r') as fp:
         N_A = len(fp.readlines())
@@ -79,8 +79,10 @@ if __name__ == "__main__":
     print(samp_clust_file)
     print(len(samp_clust_df))
 
+    # cluster.$.all.txt contains a list of numbers which correspond to frame ids from either the A.rmf3 file or the B.rmf3 file. If the frame id is > than the number of A.rmf3 frames, then the frame id is really a B.rmf3 frame (subtract N_A from the frame id).
     pool_params = list()
     for i in range(len(samp_clust_df)):
+    # for i in range(100):
         params_dict = dict()
         frame_num = samp_clust_df.iloc[i,0]
         if frame_num < N_A:
@@ -106,6 +108,7 @@ if __name__ == "__main__":
         multiprocessing.cpu_count()
     )
 
+    # Calculate the distances for all RMF frames relative to the median structure and save each to a .npy matrix.
     outputs = pool_obj.map(
         calculate_distances,
         pool_params
@@ -115,3 +118,35 @@ if __name__ == "__main__":
     for dist_matrix, rmf_file_name, rmf_id in outputs:
         matrix_file = Path(matrix_dir, "dist_{}{}.npy".format(rmf_file_name, rmf_id))
         np.save(matrix_file, dist_matrix)
+
+    mat_files = [mat_file for mat_file in matrix_dir.glob("dist_*")]
+    print(len(mat_files))
+    dist_mat = np.load(mat_files[0])
+    avg_mat = np.zeros(dist_mat.shape)
+
+    # Read all the .npy matrices and compute the RMSF matrix.
+    for mat_file in mat_files:
+        print(mat_file)
+        dist_mat = np.load(mat_file)
+        avg_mat = avg_mat + dist_mat
+
+        # break
+
+    rmsf_file = Path(job_dir, "cluster.0.rmsf.npy")
+    avg_file = Path(job_dir, "cluster.0.avg.npy")
+    avg_mat = avg_mat / len(mat_files)
+    np.save(avg_file, avg_mat)
+
+    rmsf_mat = np.zeros(dist_mat.shape)
+
+    for mat_file in mat_files:
+        print(mat_file)
+        dist_mat = np.load(mat_file)
+        rmsf_mat = rmsf_mat + (dist_mat - avg_mat)**2
+
+        # break
+
+    rmsf_mat = rmsf_mat / len(mat_files)
+    rmsf_mat = rmsf_mat**(1/2)
+
+    np.save(rmsf_file, rmsf_mat)

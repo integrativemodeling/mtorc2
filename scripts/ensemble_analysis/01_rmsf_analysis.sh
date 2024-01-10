@@ -9,6 +9,8 @@
 #$ -pe smp 25
 #$ -l hostname='qb3-id*'
 
-module load CBI conda-stage
-conda activate imp_217
-python /wynton/home/sali/mhancock/mtorc2/scripts/rmsf_analysis.py
+# module load CBI conda-stage
+# conda activate imp_217
+
+
+python /wynton/home/sali/mhancock/mtorc2/scripts/ensemble_analysis/rmsf_analysis.py

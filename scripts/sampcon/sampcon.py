@@ -4,9 +4,13 @@ import time
 from pathlib import Path
 import pandas as pd
 import random
+import shutil
+import argparse
+
 sys.path.append("/wynton/home/sali/mhancock/PMI_analysis/pyext/src")
 from analysis_trajectories import AnalysisTrajectories
-import shutil
+sys.path.append(str(Path(Path.home(), "mtorc2/src")))
+import params
 
 
 def get_best_cluster(
@@ -69,8 +73,7 @@ def extract_models(
     print("**Running extract_models***")
     t0 = time.time()
 
-    out_dirs = [str(out_dir) for out_dir in output_dir.glob("*") if
-                out_dir.is_dir()]
+    out_dirs = [str(out_dir) for out_dir in output_dir.glob("*") if out_dir.is_dir()]
 
     # gsms_dir = Path(sampcon_dir, "gsms")
     hdbscan_A_file = Path(analysis_dir, "traj/A_cluster{}.csv".format(cluster))
@@ -108,6 +111,8 @@ def extract_models(
     HA = AT.get_models_to_extract(str(gsms_A_file))
     HB = AT.get_models_to_extract(str(gsms_B_file))
 
+    print(HA.head())
+
     rmf_A_file = Path(gsms_dir, "A.rmf3")
     rmf_B_file = Path(gsms_dir, "B.rmf3")
     scores_A_file = Path(gsms_dir, "A.txt")
@@ -135,7 +140,8 @@ def sampcon(
         gsms_dir,
         mode,
         thresh,
-        range
+        range_file,
+        symm_file
 ):
     print("**Running sampcon***")
     t0 = time.time()
@@ -145,11 +151,14 @@ def sampcon(
     scores_A_file = Path(gsms_dir, "A.txt")
     scores_B_file = Path(gsms_dir, "B.txt")
 
-    custom_ranges_dir = Path(Path.home(), "mtorc2/data/custom_ranges")
-    selection_file = Path(custom_ranges_dir, "custom_ranges_{}.txt".format(range))
-    density_file = Path(custom_ranges_dir, "custom_ranges_{}.txt".format(range))
+    # custom_ranges_dir = Path(Path.home(), "mtorc2/data/custom_ranges")
+    # selection_file = Path(custom_ranges_dir, "custom_ranges_{}.txt".format(range))
+    # density_file = Path(custom_ranges_dir, "custom_ranges_{}.txt".format(range))
 
-    symm_group_file = Path(custom_ranges_dir, "symm_groups_{}.txt".format(range))
+    selection_file = range_file
+    density_file = range_file
+
+    # symm_group_file = Path(custom_ranges_dir, "symm_groups_{}.txt".format(range))
 
     if mode == "cpu":
         mode_arg = "cpu_omp"
@@ -160,9 +169,16 @@ def sampcon(
     if thresh:
         thresh_arg = "--skip -ct {}".format(thresh)
 
-    cmd = "python3 {}/imp-sampcon/pyext/src/exhaust.py --sysname mtorc2 --path {} --rmfA {} --rmfB {} --scoreA {} --scoreB {} --selection {} --density {} --gnuplot --align --ambiguity {} -m {} {} -c 4 -g 2.0 -gp".format(
+    # cmd = "python3 {}/imp-sampcon/pyext/src/exhaust.py --sysname mtorc2 --path {} --rmfA {} --rmfB {} --scoreA {} --scoreB {} --selection {} --density {} --gnuplot --align --ambiguity {} -m {} {} -c 4 -g 2.0 -gp".format(
+    #     Path.home(), analysis_dir, rmf_A_file, rmf_B_file, scores_A_file,
+    #     scores_B_file, selection_file, density_file, symm_file, mode_arg, thresh_arg)
+
+    cmd = "python3 {}/imp-sampcon/pyext/src/exhaust.py --sysname mtorc2 --path {} --rmfA {} --rmfB {} --scoreA {} --scoreB {} --selection {} --density {} --gnuplot --align -m {} {} -c 4 -g 2.0 -gp".format(
         Path.home(), analysis_dir, rmf_A_file, rmf_B_file, scores_A_file,
-        scores_B_file, selection_file, density_file, symm_group_file, mode_arg, thresh_arg)
+        scores_B_file, selection_file, density_file, mode_arg, thresh_arg)
+
+    if symm_file:
+        cmd += " --ambiguity {}".format(symm_file)
 
     print(cmd)
     os.system(cmd)
@@ -171,69 +187,79 @@ def sampcon(
 
 
 if __name__ == "__main__":
-    analysis_dir = Path(sys.argv[1])
-    sample_dir = Path(sys.argv[2])
-    job_id = os.environ["JOB_ID"] if sys.argv[3] == "" else sys.argv[3]
-    cluster = int(sys.argv[4])
-    N_struct = int(sys.argv[5])
-    filter = sys.argv[6]
-    gsms_folder = sys.argv[7]
-    range = sys.argv[8]
-    copy = None if sys.argv[9] == "" else sys.argv[9]
-    thresh = None if sys.argv[10] == "" else int(sys.argv[10])
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--analysis_dir", type=str, required=True)
+    parser.add_argument("--sample_dir", type=str, required=True)
+    parser.add_argument("--job_id", type=str, required=True)
+    parser.add_argument("--score_cluster", type=int, required=True)
+    parser.add_argument("--n_struct", type=int, required=True)
+    parser.add_argument("--filter", type=str, required=True)
+    parser.add_argument("--gsms_dir_name", type=str, required=True)
+    parser.add_argument("--range_file", type=str, required=True)
+    parser.add_argument("--symm_file", type=str, required=False)
+    parser.add_argument("--copy", type=int, required=False)
+    parser.add_argument("--thresh", type=int, required=False)
+    args = parser.parse_args()
 
-    mode = "gpu"
+    analysis_dir = Path(args.analysis_dir)
+    sample_dir = Path(args.sample_dir)
 
-    print("analysis_dir: {}".format(analysis_dir))
-    print("sample_dir:   {}".format(sample_dir))
-    print("job_id:       {}".format(job_id))
-    print("cluster:      {}".format(cluster))
-    print("N_struct:     {}".format(N_struct))
-    print("filter:       {}".format(filter))
-    print("gsms_folder:  {}".format(gsms_folder))
-    print("range:        {}".format(range))
-    print("copy:         {}".format(copy))
-    print("thresh:       {}".format(thresh))
-    print("mode:         {}".format(mode))
+    range_file = Path(args.range_file)
 
-    sampcon_dir = Path(analysis_dir, "sampcon_{}".format(cluster))
+    print(args.copy)
+    print(args.thresh)
+
+    mode = "cpu"
+
+    sampcon_dir = Path(analysis_dir, "sampcon_{}".format(args.score_cluster))
     if not sampcon_dir.exists():
         sampcon_dir.mkdir()
         Path(sampcon_dir, "gsms").mkdir()
 
-    job_dir = Path(sampcon_dir, job_id)
-    job_dir.mkdir()
+    job_dir = Path(sampcon_dir, args.job_id)
+    gsms_dir = Path(sampcon_dir, "gsms/{}".format(args.gsms_dir_name))
 
-    gsms_dir = Path(sampcon_dir, "gsms/{}".format(gsms_folder))
+    # # #
+    if job_dir.exists():
+        shutil.rmtree(job_dir)
+    # if gsms_dir.exists():
+    #     shutil.rmtree(gsms_dir)
+    # # #
+
+    # # Raise an error if the job_dir already exists.
+    job_dir.mkdir(exist_ok=False)
+    params.write_params(vars(args), Path(job_dir, "params.txt"))
 
     if not gsms_dir.exists():
+        print("Creating good scoring models directory")
         gsms_dir.mkdir()
         extract_models(
             output_dir=sample_dir,
             analysis_dir=analysis_dir,
-            filter=filter,
+            filter=args.filter,
             gsms_dir=gsms_dir,
-            N=N_struct,
-            cluster=cluster
+            N=args.n_struct,
+            cluster=args.score_cluster
         )
     else:
-        print("gsms dir found")
+        print("Good scoring models directory found")
 
-    # # Need to copy over 3 files from an older sampcon run. The pre-computed distance matrix is used in clustering. Sampling precision statistics and Chi square grid statistics are for constructing plots.
-    if copy:
-        copy_files = list()
-        copy_files.append("Distances_Matrix.data.npy")
-        copy_files.append("mtorc2.Sampling_Precision_Stats.txt")
-        copy_files.append("mtorc2.ChiSquare_Grid_Stats.txt")
+    # Need to copy over 3 files from an older sampcon run. The pre-computed distance matrix is used in clustering. Sampling precision statistics and Chi square grid statistics are for constructing plots.
+    if type(args.copy) == int:
+        copy_from_dir = Path(sampcon_dir, str(args.copy))
+        orig_files = [Path(copy_from_dir, "Distances_Matrix.data.npy"), Path(copy_from_dir, "mtorc2.Sampling_Precision_Stats.txt"), Path(copy_from_dir, "mtorc2.ChiSquare_Grid_Stats.txt")]
 
-        for file_name in copy_files:
-            shutil.copy(Path(sampcon_dir, copy, file_name), Path(job_dir, file_name))
+        for orig_file in orig_files:
+            new_file = Path(job_dir, orig_file.name)
+            print(orig_file, new_file)
+            shutil.copy(orig_file, new_file)
 
     os.chdir(job_dir)
     sampcon(
         analysis_dir=analysis_dir,
         gsms_dir=gsms_dir,
         mode=mode,
-        thresh=thresh,
-        range=range
+        thresh=args.thresh,
+        range_file=range_file,
+        symm_file=args.symm_file
     )

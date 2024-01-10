@@ -4,8 +4,13 @@ import time
 from pathlib import Path
 import pandas as pd
 import random
-sys.path.append("/wynton/home/sali/mhancock/PMI_analysis/pyext/src")
+import argparse
+import multiprocessing
+
+sys.path.append(str(Path(Path.home(), "PMI_analysis/pyext/src")))
 from analysis_trajectories import AnalysisTrajectories
+sys.path.append(str(Path(Path.home(), "mtorc2/src")))
+import params
 
 
 def analyze_trajectories(
@@ -15,15 +20,6 @@ def analyze_trajectories(
         equil,
         min_clust
 ):
-    print("**Running analyze_trajectories***")
-    print("analysis_dir: {}".format(analysis_dir))
-    print("out_dirs:     {}".format(out_dirs))
-    print("cluster_on:   {}".format(cluster_on))
-    print("equil:        {}".format(equil))
-    print("min_clust:    {}".format(min_clust))
-
-    t0 = time.time()
-
     XLs_cutoffs = dict()
     XLs_cutoffs['DSS'] = 35.0
     XLs_cutoffs['EDC'] = 16.0
@@ -65,73 +61,104 @@ def analyze_trajectories(
     )
     AT.summarize_XLs_info()
 
-    print("Finished in {}s".format(time.time()-t0))
-
 
 """
 AnalysisTrajectories density based clustering produces several clusters. The structures contained within each cluster are enumerated by an A and B csv file. In order to extract the structures for a given cluster, the A and B csv files must be corrected for the following reasons.
 
-1) The column containing the rmf3 file for each structure is mangled. I am not sure why this is the case. 
+1) The column containing the rmf3 file for each structure is mangled. I am not sure why this is the case.
 
-2) In order to combine multiple samples in the analysis pipeline, I add all output directories to a temporary head directory, but renumber all the output directories randomly. The output field for each entry therefore must be updated. 
+/scratch/9752918.110.member.q/output_109/rmfs//1.rmf3
+/wynton/group/sali/mhancock/mtorc2/samples/exp_15/136/9752918/output_0/rmfs/
+
+2) In order to combine multiple samples in the analysis pipeline, I add all output directories to a temporary head directory, but renumber all the output directories randomly. The output field for each entry therefore must be updated.
 """
+def fix_rmf_file_pool(
+        params_dict
+):
+    rmf_file_name = params_dict["rmf_file"].split("/")[-1]
+    rmf_file_fixed = Path(params_dict["sample_dir"], params_dict["output_dir_name"], "rmfs", rmf_file_name)
+
+    return rmf_file_fixed
+
+
 def correct_csvs(
         analysis_dir,
-        output_dir
+        sample_dir
 ):
-    print("**Running correct_csvs***")
-    t0 = time.time()
+    pool_obj = multiprocessing.Pool(
+        multiprocessing.cpu_count()
+    )
 
-    # csv_files = list(Path(analysis_dir, "traj").glob("selected*"))
     csv_files = list(Path(analysis_dir, "traj").glob("*_detailed.csv*"))
 
+    print(analysis_dir)
+    print(csv_files)
     for csv_file in csv_files:
         print(csv_file)
         cluster_df = pd.read_csv(csv_file)
 
-        for i in range(len(cluster_df)):
-            rmf_file = cluster_df.iloc[i, cluster_df.columns.get_loc("rmf3_file")]
-            comps = rmf_file.split("/")
+        pool_params = list()
+        rmf_files = cluster_df["rmf3_file"].tolist()
+        output_dir_names = cluster_df["traj"].tolist()
 
-            new_traj_num = cluster_df.iloc[i, cluster_df.columns.get_loc("traj")]
+        for i in range(len(rmf_files)):
+            params_dict = dict()
+            params_dict["rmf_file"] = rmf_files[i]
+            params_dict["output_dir_name"] = output_dir_names[i]
+            params_dict["sample_dir"] = sample_dir
+            pool_params.append(params_dict)
 
-            fixed_rmf_file = str(
-                Path(output_dir, new_traj_num, comps[4], comps[6]))
-            cluster_df.iloc[
-                i, cluster_df.columns.get_loc("rmf3_file")] = fixed_rmf_file
+        pool_results = pool_obj.imap(
+            fix_rmf_file_pool,
+            pool_params
+        )
+
+        cluster_df["rmf3_file"] = [str(rmf_file_fixed) for rmf_file_fixed in pool_results]
 
         comps_csv = str(csv_file.stem).split("_")
-        csv_sample_name = "{}_{}.csv".format(comps_csv[2],comps_csv[3])
+
+        half = comps_csv[2]
+        cluster_name = comps_csv[3]
 
         cluster_df = cluster_df.rename(columns={'Unnamed: 0': ''})
-        cluster_df.to_csv(Path(analysis_dir, "traj", csv_sample_name), index=False)
-
-    print("Finished in {}s".format(time.time()-t0))
+        cluster_df.to_csv(Path(analysis_dir, "traj/{}_{}.csv".format(half, cluster_name)), index=False)
 
 
 if __name__ == "__main__":
     import warnings
     warnings.filterwarnings("ignore")
 
-    analysis_dir = Path(sys.argv[1])
-    sample_dir = Path(sys.argv[2])
-    # os.system("mkdir {}".format(analysis_dir))
-    # os.system("mkdir {}".format(Path(analysis_dir, "traj")))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--analysis_dir", type=str, required=True)
+    parser.add_argument("--sample_dir", type=str, required=True)
+    parser.add_argument("--cluster_on", type=str, required=True)
+    parser.add_argument("--equil", type=float, required=False)
+    parser.add_argument("--min_clust", type=int, required=True)
+    args = parser.parse_args()
+    params.write_params(vars(args), Path(args.analysis_dir, "traj/params.txt"))
+
+    analysis_dir = Path(args.analysis_dir)
+    sample_dir = Path(args.sample_dir)
+    cluster_on = args.cluster_on.split(",")
 
     out_dirs = [str(out_dir) for out_dir in sample_dir.glob("output_*")]
     # out_dirs = out_dirs[:10]
 
+    t0 = time.time()
     analyze_trajectories(
         analysis_dir=analysis_dir,
         out_dirs=out_dirs,
-        cluster_on=sys.argv[3].split(","),
-        equil=-1 if sys.argv[4] == "" else float(sys.argv[4]),
-        min_clust=int(sys.argv[5])
+        cluster_on=cluster_on,
+        equil=args.equil,
+        min_clust=args.min_clust
     )
+    print("Analyze trajectories in {}s".format(time.time()-t0))
 
+    t0 = time.time()
     correct_csvs(
         analysis_dir=analysis_dir,
-        output_dir=sample_dir
+        sample_dir=sample_dir
     )
+    print("Corrected csvs in {}s".format(time.time()-t0))
 
 

@@ -1,1 +1,0 @@
-RICTOR-MTOR-MSIN1-MLST8 dimer rigid body based on EM map. CRIM, RBD, AKT rigid bodies, no PH. All XLs.

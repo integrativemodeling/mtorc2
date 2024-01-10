@@ -1,0 +1,4 @@
+name,subunit,color,rb_start,rb_end,pdb_file,em_prefix,start_pdb,end_pdb,offset,rb_trans,rb_rot,pdb_chain,model_chain
+CRIM,MSIN1,red,155,267,/wynton/home/sali/mhancock/mtorc2/data/em/models/mTORC2-Akt_v1113_Dimer.pdb,/wynton/home/sali/mhancock/mtorc2/data/em/comps/1131/10/CRIM,155,267,0,1,1,I,D
+KINASEN,AKT1,purple,144,229,/wynton/home/sali/mhancock/mtorc2/data/em/models/mTORC2-Akt_v1113_Dimer.pdb,/wynton/home/sali/mhancock/mtorc2/data/em/comps/1131/10/KINASEN,144,233,0,1,1,J,E
+KINASEC,AKT1,purple,234,425,/wynton/home/sali/mhancock/mtorc2/data/em/models/mTORC2-Akt_v1113_Dimer.pdb,/wynton/home/sali/mhancock/mtorc2/data/em/comps/1131/10/KINASEC,234,425,0,1,1,J,E

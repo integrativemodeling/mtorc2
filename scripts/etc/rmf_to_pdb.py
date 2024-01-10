@@ -143,13 +143,12 @@ def rmf_to_pdb(
 
 
 if __name__ == "__main__":
-    # cluster_dir = Path("/wynton/group/sali/mhancock/mtorc2/samples/exp_14/126/analysis/0/sampcon_2/3/cluster.0")
-    cluster_dir = Path(Path.home(), "mtorc2/manuscript/submission_2/models/dev_09_2_-1_2/cluster.0")
+    cluster_dir = Path("/wynton/group/sali/mhancock/mtorc2/dev/09_conn_akt_tail_2/analysis/1/sampcon_-1/1/cluster.0")
     print(cluster_dir)
     rmf_to_pdb(
         rmf_file=Path(cluster_dir, "cluster_center_model.rmf3"),
         frame=0,
         pdb_file=Path(cluster_dir, "cluster_center_model.pdb"),
-        add_ss=True,
+        add_ss=False,
         corr_chains=True
     )

@@ -1,1 +1,0 @@
-Repeat experiment 39 except after fixing XLs (39.csv) and EV restraint (MTOR vs RICTOR clone). 6 replicas for 15k steps. 

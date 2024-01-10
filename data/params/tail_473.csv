@@ -1,0 +1,11 @@
+name,subunit,color,rb_start,rb_end,pdb_file,em_prefix,res_per_comp,start_pdb,end_pdb,offset,rb_trans,rb_rot,flex_trans,pdb_chain,model_chain
+MTOR,MTOR,blue,1,2549,/wynton/home/sali/mhancock/mtorc2/data/models/submission_3/136_2_1/cluster.0/cluster_center_model.pdb,,0,1,2549,0,0,0,0,A,A
+RICTOR,RICTOR,green,1,1708,/wynton/home/sali/mhancock/mtorc2/data/models/submission_3/136_2_1/cluster.0/cluster_center_model.pdb,,0,1,1708,0,0,0,0,B,B
+MLST8,MLST8,yellow,1,326,/wynton/home/sali/mhancock/mtorc2/data/models/submission_3/136_2_1/cluster.0/cluster_center_model.pdb,,0,1,326,0,0,0,0,C,C
+MSIN1,MSIN1,red,1,154,/wynton/home/sali/mhancock/mtorc2/data/models/submission_3/136_2_1/cluster.0/cluster_center_model.pdb,,0,1,154,0,0,0,0,D,D
+CRIM,MSIN1,red,155,277,/wynton/home/sali/mhancock/mtorc2/data/models/submission_3/136_2_1/cluster.0/cluster_center_model.pdb,,0,155,267,0,0,0,0,D,D
+RBD,MSIN1,red,278,382,/wynton/home/sali/mhancock/mtorc2/data/models/submission_3/136_2_1/cluster.0/cluster_center_model.pdb,,0,278,353,0,0,0,0,D,D
+MSIN1PH,MSIN1,red,383,522,/wynton/home/sali/mhancock/mtorc2/data/models/submission_3/136_2_1/cluster.0/cluster_center_model.pdb,,0,383,481,0,0,0,0,D,D
+AKT1PH,AKT1,purple,1,143,/wynton/home/sali/mhancock/mtorc2/data/models/submission_3/136_2_1/cluster.0/cluster_center_model.pdb,,0,1,123,0,0,0,0,E,E
+KINASEN,AKT1,purple,144,233,/wynton/home/sali/mhancock/mtorc2/data/models/submission_3/136_2_1/cluster.0/cluster_center_model.pdb,,0,144,233,0,0,0,0,E,E
+KINASEC,AKT1,purple,234,480,/wynton/home/sali/mhancock/mtorc2/data/models/submission_3/136_2_1/cluster.0/cluster_center_model_tail.pdb,,0,234,476,0,0,0,0.5,E,E

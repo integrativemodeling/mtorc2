@@ -1,1 +1,0 @@
-Repeat 41 adding the extra flexible region at the end of MSIN1 (RBD-PH). Fixed the symmetry element of the EM-dimer rigid body as well. 6 replicas for 50k steps.  

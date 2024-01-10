@@ -1,0 +1,4 @@
+open /Users/matthew/Documents/mtorc2/data/models/submission_3/136_2_1/membrane_bot.pdb
+open /Users/matthew/Documents/mtorc2/data/models/submission_3/136_2_1/membrane_top.pdb
+size #1 atomRadius 3
+size #2 atomRadius 3

@@ -3,13 +3,13 @@ import pandas as pd
 
 
 def gen_transparency(
+        pdb_file,
+        out_file,
         coord,
         view,
         size,
         omit_chains
 ):
-    pdb_file = Path(Path.home(), "Documents/mtorc2/manuscript/submission/models/119_2_5_2/cluster_center_model.pdb")
-
     f = open(pdb_file, "r")
 
     atom_dict = {"chain": list(), "res_id": list(), "res_type": list(), "x": list(), "y": list(), "z": list()}
@@ -45,7 +45,7 @@ def gen_transparency(
     # atom_df["z"] = atom_df["z"] - atom_df["z"].min()
 
     avg_coord_dict = {"chain": list(), "start": list(), "end": list(), "avg": list()}
-    f = open(Path(Path.home(), "Documents/mtorc2/scripts/chimerax/transparency_{}_{}.cxc".format(coord, view)), "w")
+    f = open(out_file, "w")
     chains = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
     for omit_chain in omit_chains:
         chains.remove(omit_chain)
@@ -131,13 +131,13 @@ def gen_transparency(
 
 
 if __name__ == "__main__":
-    view = 0
-    coord = "z"
-    size = 30
-    omit_chains = ["E", "J"]
-
-    gen_transparency(coord, view, size, omit_chains)
-
     for view in [0,1]:
         for coord in ["x", "y", "z"]:
-            gen_transparency(coord, view, size, omit_chains)
+            gen_transparency(
+                pdb_file=Path(Path.home(), "Documents/mtorc2/data/models/submission_3//136_2_1/cluster.0/cluster_center_model.pdb"),
+                out_file=Path(Path.home(), "Documents/mtorc2/scripts/chimerax/transparency_{}_{}.cxc".format(coord, view)),
+                coord=coord,
+                view=view,
+                size=30,
+                omit_chains=["E", "J"]
+            )

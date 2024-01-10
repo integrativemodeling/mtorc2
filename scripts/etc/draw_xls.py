@@ -32,25 +32,11 @@ def get_xl_vis_df(
         h
 ):
     chain_ids = dict()
-    # chain_ids["MTOR"] = "A"
-    # chain_ids["RICTOR"] = "B"
-    # chain_ids["MLST8"] = "C"
-    # chain_ids["MSIN1"] = "D"
-    # chain_ids["CRIM"] = "E"
-    # chain_ids["RBD"] = "F"
-    # chain_ids["MSIN1PH"] = "G"
-    # chain_ids["AKT1PH"] = "H"
-    # chain_ids["KINASE"] = "I"
-
     chain_ids["MTOR"] = "A"
     chain_ids["RICTOR"] = "B"
     chain_ids["MLST8"] = "C"
     chain_ids["MSIN1"] = "D"
     chain_ids["AKT1"] = "E"
-
-    # fh = RMF.open_rmf_file_read_only(str(rmf_file))
-    # m = IMP.Model()
-    # h = IMP.rmf.create_hierarchies(fh, m)[0]
 
     xl_vis_dict = dict()
     xl_vis_dict["chain1"] = list()
@@ -117,22 +103,24 @@ def draw_xls(
 
 
 if __name__ == "__main__":
-    cluster_dir = Path("/wynton/home/sali/mhancock/mtorc2/data/final_models/submission_2/126_0_2_3/cluster.0")
-
+    cluster_dir = Path("/wynton/group/sali/mhancock/mtorc2/analysis/136/2/sampcon_-1/1/cluster.0")
+    xl_file = Path(cluster_dir, "xls.csv")
+    pb_file = Path(Path.home(), "mtorc2/tmp/xls.pb")
     rmf_file = Path(cluster_dir, "cluster_center_model.rmf3")
+
     fh = RMF.open_rmf_file_read_only(str(rmf_file))
     m = IMP.Model()
     h = IMP.rmf.create_hierarchies(fh, m)[0]
     IMP.rmf.load_frame(fh, RMF.FrameID(0))
 
-    xl_file = Path(cluster_dir, "xls.csv")
     xl_df = pd.read_csv(xl_file)
     xl_df = xl_df.drop(columns=["Unnamed: 0"])
 
+    # Exclude Xls that are in the following dataframes.
     exclude_xl_files = list()
     exclude_xl_files.append(Path(Path.home(), "mtorc2/data/xlms/csvs/a_site.csv"))
     exclude_xl_files.append(Path(Path.home(), "mtorc2/data/xlms/csvs/akt_tail.csv"))
-    exclude_dfs = list()
+    exclude_dfs = [pd.DataFrame(columns=["prot1", "res1", "prot2", "res2"])]
     for exclude_xl_file in exclude_xl_files:
         exclude_dfs.append(pd.read_csv(exclude_xl_file))
 
@@ -140,17 +128,14 @@ if __name__ == "__main__":
 
     exclude_indices = list()
     for i in range(len(xl_df)):
-        exclude = False
         prot1,res1,prot2,res2,xl_type,cutoff,sat,min_dist,ambig,frame = xl_df.iloc[i]
-
         print(prot1,res1,prot2,res2)
-        # len(exclude_df[(exclude_df["prot1"] == prot1) & (exclude_df["res1"] == res1) & (exclude_df["prot2"] == prot2) & (exclude_df["res2"] == res2)]))
-
-        # exclude = exclude_xl(prot1, prot2, res1, res2, exclude_df)
         if len(exclude_df[(exclude_df["prot1"] == prot1) & (exclude_df["res1"] == res1) & (exclude_df["prot2"] == prot2) & (exclude_df["res2"] == res2)]) > 0:
             exclude = True
         elif len(exclude_df[(exclude_df["prot2"] == prot1) & (exclude_df["res2"] == res1) & (exclude_df["prot1"] == prot2) & (exclude_df["res1"] == res2)]) > 0:
             exclude = True
+        else:
+            exclude = False
 
         if exclude:
             exclude_indices.append(i)
@@ -164,7 +149,6 @@ if __name__ == "__main__":
         h=h
     )
 
-    pb_file = Path(cluster_dir, "xls_new.pb")
     draw_xls(
         xl_vis_df=xl_vis_df,
         pb_file=pb_file

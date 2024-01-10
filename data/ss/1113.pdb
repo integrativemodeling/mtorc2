@@ -1,0 +1,302 @@
+HELIX    1   1 THR A   14  LEU A   22  1                                   9
+HELIX    2   2 HIS A   46  ARG A   53  1                                   8
+HELIX    3   3 ALA A   80  LEU A   93  1                                  14
+HELIX    4   4 PRO A  120  MET A  135  1                                  16
+HELIX    5   5 THR A  141  GLY A  157  1                                  17
+HELIX    6   6 GLU A  162  ILE A  177  1                                  16
+HELIX    7   7 PRO A  180  ALA A  197  1                                  18
+HELIX    8   8 GLN A  203  THR A  221  1                                  19
+HELIX    9   9 GLU A  224  LYS A  226  1                                   3
+HELIX   10  10 TRP A  233  PHE A  245  1                                  13
+HELIX   11  11 ARG A  257  SER A  275  1                                  19
+HELIX   12  12 MET A  277  VAL A  295  1                                  19
+HELIX   13  13 ARG A  360  ARG A  381  1                                  22
+HELIX   14  14 SER A  386  PHE A  402  1                                  17
+HELIX   15  15 PRO A  404  THR A  410  1                                   7
+HELIX   16  16 TYR A  412  LYS A  425  1                                  14
+HELIX   17  17 GLU A  427  ALA A  443  1                                  17
+HELIX   18  18 GLU A  447  VAL A  450  1                                   4
+HELIX   19  19 TYR A  412  CYS A  423  1                                  12
+HELIX   20  20 GLU A  427  ALA A  443  1                                  17
+HELIX   21  21 SER A  446  ALA A  462  1                                  17
+HELIX   22  22 ALA A  480  MET A  493  1                                  14
+HELIX   23  23 PRO A  495  VAL A  511  1                                  17
+HELIX   24  24 PRO A  515  GLN A  527  1                                  13
+HELIX   25  25 PRO A  529  MET A  548  1                                  20
+HELIX  166 166 VAL A  579  SER A  591  1                                  13
+HELIX  167 167 THR A  600  LEU A  611  1                                  12
+HELIX  169 169 LYS A  616  ALA A  637  1                                  22
+HELIX  170 170 GLN A  646  THR A  665  1                                  20
+HELIX  171 171 PRO A  669  SER A  678  1                                  12
+HELIX  172 172 GLU A  681  ALA A  688  1                                   8
+HELIX  173 173 ALA A  690  ASN A  701  1                                  12
+HELIX  174 174 PHE A  705  MET A  721  1                                  17
+HELIX  175 175 PRO A  723  HIS A  743  1                                  23
+HELIX  176 176 GLY A  747  ASN A  763  1                                  17
+HELIX  177 177 PRO A  765  ARG A  769  1                                   5
+HELIX  178 178 MET A  772  LYS A  784  1                                  13
+HELIX  179 179 PRO A  792  SER A  809  1                                  18
+HELIX  180 180 LEU A  811  GLN A  829  1                                  19
+HELIX  182 182 LEU A  834  THR A  851  1                                  16
+HELIX  183 183 GLU A  856  LYS A  860  1                                   5
+HELIX  184 184 PRO A  862  THR A  874  1                                  13
+HELIX  185 185 GLN A  878  LEU A  891  1                                  14
+HELIX  186 186 PRO A  896  ILE A  903  1                                   8
+HELIX  187 187 THR A  931  ASN A  940  1                                  10
+HELIX  188 188 LEU A  943  ARG A  960  1                                  18
+HELIX  189 189 SER A  965  LEU A  982  1                                  18
+HELIX  190 190 LEU A  984  VAL A 1003  1                                  20
+HELIX  192 192 GLY A 1006  VAL A 1023  1                                  18
+HELIX  193 193 SER A 1025  PHE A 1041  1                                  17
+HELIX  194 194 THR A 1046  LEU A 1063  1                                  18
+HELIX  195 195 PHE A 1067  HIS A 1084  1                                  18
+HELIX  198 198 ILE A 1091  PHE A 1103  1                                  13
+HELIX  199 199 ALA A 1105  ASP A 1108  1                                   4
+HELIX  200 200 LEU A 1111  ASP A 1123  1                                  15
+HELIX  201 201 LEU A 1129  SER A 1145  1                                  17
+HELIX  202 202 TYR A 1151  GLN A 1165  1                                  15
+HELIX  203 203 PRO A 1167  LEU A 1184  1                                  18
+HELIX  206 206 LYS A 1186  HIS A 1202  1                                  17
+HELIX  207 207 GLN A 1207  LYS A 1218  1                                  12
+HELIX  208 208 PRO A 1229  GLY A 1240  1                                  12
+HELIX  209 209 THR A 1262  TRP A 1269  1                                   8
+HELIX  210 210 LYS A 1277  ASP A 1294  1                                  18
+HELIX  211 211 PRO A 1298  ALA A 1309  1                                  12
+HELIX  213 213 ASN A 1311  GLU A 1328  1                                  18
+HELIX  214 214 GLU A 1331  SER A 1347  1                                  17
+HELIX  215 215 ALA A 1351  HIS A 1366  1                                  16
+HELIX  217 217 ILE A 1380  CYS A 1390  1                                  11
+HELIX  218 218 TYR A 1393  LYS A 1406  1                                  14
+HELIX  219 219 PRO A 1410  LEU A 1423  1                                  14
+HELIX  220 220 PRO A 1426  HIS A 1439  1                                  14
+HELIX  221 221 ALA A 1447  LEU A 1453  1                                   7
+HELIX  222 222 TRP A 1456  THR A 1469  1                                  14
+HELIX  223 223 PRO A 1474  LEU A 1487  1                                  14
+HELIX  224 224 TRP A 1490  LEU A 1503  1                                  14
+HELIX  225 225 ASP A 1506  LEU A 1523  1                                  18
+HELIX  226 226 TRP A 1526  MET A 1535  1                                  10
+HELIX  227 227 HIS A 1541  HIS A 1553  1                                  13
+HELIX  228 228 PHE A 1557  GLU A 1581  1                                  25
+HELIX  229 229 TYR A 1583  LEU A 1607  1                                  25
+HELIX  230 230 PRO A 1609  GLY A 1625  1                                  17
+HELIX  231 231 VAL A 1630  LEU A 1642  1                                  13
+HELIX  232 232 PRO A 1646  GLU A 1648  1                                   3
+HELIX  233 233 MET A 1650  LYS A 1662  1                                  13
+HELIX  234 234 LEU A 1666  LEU A 1677  1                                  12
+HELIX  235 235 PRO A 1694  LYS A 1706  1                                  13
+HELIX  236 236 LYS A 1710  HIS A 1730  1                                  21
+HELIX  237 237 GLN A 1737  GLN A 1762  1                                  26
+HELIX  238 238 THR A 1768  HIS A 1782  1                                  15
+HELIX  239 239 TYR A 1787  ALA A 1810  1                                  24
+HELIX  240 240 THR A 1870  SER A 1895  1                                  26
+HELIX  241 241 ASN A 1899  TYR A 1913  1                                  15
+HELIX  242 242 PRO A 1917  ALA A 1929  1                                  13
+HELIX  243 243 ILE A 1932  LEU A 1936  1                                   5
+HELIX  244 244 ILE A 1939  ARG A 1945  1                                   7
+HELIX  245 245 PRO A 1951  TYR A 1967  1                                  17
+HELIX  246 246 PRO A 1969  LYS A 1981  1                                  13
+HELIX  247 247 THR A 1985  HIS A 2001  1                                  17
+HELIX  248 248 ASN A 2003  ALA A 2020  1                                  18
+HELIX  249 249 TRP A 2023  GLU A 2041  1                                  19
+HELIX  250 250 VAL A 2044  ARG A 2060  1                                  17
+HELIX  251 251 LEU A 2065  SER A 2091  1                                  27
+HELIX  252 252 VAL A 2094  GLN A 2117  1                                  24
+HELIX  254 254 LEU A 2123  VAL A 2126  1                                   4
+HELIX  255 255 PRO A 2128  MET A 2132  1                                   5
+HELIX  256 256 LEU A 2192  ASN A 2211  1                                  20
+HELIX  257 257 PRO A 2213  LYS A 2218  1                                   6
+HELIX  258 258 LEU A 2246  LYS A 2257  1                                  12
+HELIX  259 259 ILE A 2263  MET A 2271  1                                   9
+HELIX  260 260 TYR A 2275  HIS A 2277  1                                   3
+HELIX  261 261 LEU A 2280  ASN A 2293  1                                  14
+HELIX  262 262 ASP A 2297  LYS A 2306  1                                  10
+HELIX  263 263 SER A 2310  LEU A 2334  1                                  25
+HELIX  264 264 VAL A 2364  THR A 2367  1                                   4
+HELIX  264 264 ARG A 2381  ALA A 2386  1                                   6
+HELIX  265 265 ASN A 2395  TYR A 2423  1                                  29
+HELIX  267 267 LEU A 2427  THR A 2434  1                                   8
+HELIX  267 267 ALA A 2492  THR A 2509  1                                  18
+HELIX  268 268 VAL A 2521  THR A 2533  1                                  13
+HELIX  269 269 HIS A 2535  GLN A 2540  1                                   6
+HELIX  270 270 ILE A 2543  TRP A 2545  1                                   3
+
+HELIX  349 349 PRO B   34  ALA B   46  1                                  13
+HELIX  351 351 ASN B   53  ILE B   70  1                                  18
+HELIX  352 352 GLU B   74  LEU B   77  1                                   4
+HELIX  353 353 TYR B   81  LEU B   93  1                                  13
+HELIX  355 355 LYS B   97  LEU B  110  1                                  14
+HELIX  356 356 SER B  114  LEU B  123  1                                  10
+HELIX  357 357 VAL B  125  ILE B  135  1                                  11
+HELIX  358 358 GLU B  140  VAL B  156  1                                  17
+HELIX  359 359 SER B  163  GLU B  179  1                                  15
+HELIX  360 360 MET B  183  GLN B  197  1                                  15
+HELIX  361 361 PRO B  199  ARG B  205  1                                   7
+HELIX  362 362 GLY B  207  ASP B  217  1                                  11
+HELIX  363 363 SER B  221  ASN B  236  1                                  16
+HELIX  364 364 PRO B  238  TYR B  243  1                                   6
+HELIX  365 365 GLU B  249  THR B  258  1                                  10
+HELIX  367 367 GLU B  270  ARG B  293  1                                  24
+HELIX  368 368 TRP B  295  CYS B  302  1                                  10
+HELIX  369 369 GLY B  308  CYS B  317  1                                  10
+HELIX  370 370 MET B  321  PHE B  335  1                                  15
+HELIX  371 371 PHE B  346  VAL B  353  1                                   8
+HELIX  372 372 ASP B  360  TRP B  362  1                                   3
+HELIX  374 374 VAL B  369  ILE B  376  1                                   8
+HELIX  375 375 LEU B  387  ASN B  402  1                                  16
+HELIX  376 376 LEU B  404  ASN B  414  1                                  11
+HELIX  377 377 ASP B  417  ILE B  437  1                                  21
+HELIX  378 378 HIS B  440  CYS B  448  1                                   9
+HELIX  380 380 PRO B  450  ALA B  457  1                                   8
+HELIX  381 381 LYS B  463  ARG B  485  1                                  23
+HELIX  382 382 LEU B  492  GLN B  510  1                                  19
+HELIX  383 383 GLU B  525  SER B  535  1                                  11
+HELIX  383 383 ASN B  543  GLU B  545  1                                   3
+HELIX  384 384 TRP B  548  LYS B  556  1                                   9
+HELIX  385 385 VAL B  560  ASN B  564  1                                   5
+HELIX  385 385 GLU B  568  TYR B  581  1                                  14
+HELIX  386 386 PRO B  583  SER B  585  1                                   3
+HELIX  387 387 LYS B  597  GLU B  614  1                                  18
+HELIX  388 388 GLU B  617  SER B  638  1                                  20
+HELIX  388 388 ARG B  644  LEU B  646  1                                   3
+HELIX  389 389 ASN B  648  THR B  653  1                                   6
+HELIX  390 390 LEU B  655  CYS B  668  1                                  14
+HELIX  392 392 PRO B  670  CYS B  679  1                                  10
+HELIX  393 393 VAL B  681  SER B  690  1                                  10
+HELIX  394 394 ASP B  695  SER B  704  1                                  10
+HELIX  395 395 LEU B  712  THR B  722  1                                  11
+HELIX  396 396 ASP B  726  ALA B  742  1                                  17
+HELIX  398 398 PHE B  747  HIS B  760  1                                  14
+HELIX  399 399 LYS B  764  GLU B  779  1                                  16
+HELIX  400 400 LYS B  781  MET B  790  1                                  10
+HELIX  401 401 ASP B  799  SER B  810  1                                  12
+HELIX  403 403 PRO B  812  ARG B  821  1                                  10
+HELIX  404 404 TYR B  823  LEU B  851  1                                  29
+HELIX  406 406 LEU B  882  HIS B  888  1                                   7
+HELIX  408 408 LYS B  890  GLN B  899  1                                  10
+HELIX  409 409 ILE B  901  ARG B  910  1                                  10
+HELIX  410 410 TRP B  917  SER B  935  1                                  19
+HELIX  411 411 ASN B  937  GLU B  946  1                                  10
+HELIX  412 412 VAL B  948  GLN B  958  1                                  11
+HELIX  413 413 LEU B  962  LYS B  977  1                                  16
+HELIX  414 414 LYS B  979  HIS B  988  1                                  10
+HELIX  457 457 VAL B 1008  SER B 1017  1                                  10
+HELIX  415 415 ILE B 1433  PHE B 1437  1                                   5
+HELIX  416 416 GLN B 1446  LYS B 1448  1                                   3
+HELIX  417 417 LEU B 1489  SER B 1495  1                                   7
+HELIX  419 419 TYR B 1522  LEU B 1529  1                                   8
+HELIX  420 420 PRO B 1606  SER B 1624  1                                  19
+HELIX  421 421 THR B 1629  LYS B 1642  1                                  14
+HELIX  422 422 PRO B 1644  ASP B 1648  1                                   5
+HELIX  423 423 ILE B 1650  HIS B 1662  1                                  13
+HELIX  424 424 LEU B 1667  PHE B 1677  1                                  11
+HELIX  425 425 LEU B 1683  ALA B 1694  1                                  12
+
+HELIX  432 432 ASN D    6  SER D   21  1                                  16
+HELIX  433 433 MET D   26  ASP D   33  1                                   8
+HELIX  435 435 ASN D   85  GLN D  100  1                                  16
+HELIX  436 436 ALA D  117  LEU D  123  1                                   7
+HELIX  437 437 ILE D  141  CYS D  149  1                                   8
+HELIX  438 438 ASN D  158  PHE D  163  1                                   6
+HELIX  439 439 VAL D  203  SER D  216  1                                  14
+HELIX  440 440 VAL D  227  ALA D  229  1                                   3
+HELIX  441 441 ILE D  254  LYS D  256  1                                   3
+HELIX    8 AA8 THR D  300  GLY D  314  1                                  15
+HELIX    9 AA9 SER D  357  GLY D  361  5                                   5
+HELIX   10 AB1 ASP D  370  SER D  379  1                                  10
+HELIX   11 AB2 ASP D  471  GLU D  487  1                                  17
+HELIX   12 AB3 THR D  492  GLN D  500  1                                   9
+
+HELIX    1   1 VAL E   45  GLN E   47  1                                   3
+HELIX    2   2 PRO E   93  SER E  122  1                                  30
+HELIX  442 442 MET E  147  GLU E  149  1                                   3
+HELIX  443 443 LYS E  183  ALA E  188  1                                   6
+HELIX  444 444 VAL E  192  ASN E  204  1                                  13
+HELIX  445 445 LEU E  235  GLU E  242  1                                   8
+HELIX  446 446 GLU E  247  GLU E  267  1                                  21
+HELIX  447 447 LEU E  277  ASN E  279  1                                   3
+HELIX  448 448 PHE E  293  LEU E  295  1                                   3
+HELIX  449 449 PRO E  313  TYR E  315  1                                   3
+HELIX  450 450 PRO E  318  LEU E  321  1                                   4
+HELIX  451 451 ARG E  328  CYS E  344  1                                  17
+HELIX  452 452 HIS E  354  MET E  363  1                                  10
+HELIX  453 453 PRO E  374  LEU E  383  1                                  10
+HELIX  454 454 PRO E  388  GLN E  390  1                                   3
+HELIX  455 455 ASP E  398  MET E  403  1                                   6
+HELIX  456 456 ARG E  406  PHE E  408  1                                   3
+HELIX  458  18 TRP E  413  TYR E  417  1                                   5
+
+SHEET   12  1212 SER A2120  GLU A2122  0
+SHEET   13  1313 GLN A2154  ILE A2156  0
+SHEET   14  1414 SER A2159  VAL A2162  0
+SHEET   15  1515 ARG A2170  GLY A2176  0
+SHEET   17  1717 GLY A2179  GLY A2188  0
+SHEET   18  1818 VAL A2227  SER A2231  0
+SHEET   19  1919 SER A2234  GLY A2238  0
+SHEET   20  2020 CYS A2243  THR A2245  0
+SHEET   21  2121 LEU A2344  ASP A2347  0
+SHEET   22  2222 GLY A2351  HIS A2355  0
+
+SHEET   81  8181 TRP B 990  ALA B 992  0
+SHEET   82  8282 ALA B1428  PRO B1430  0
+
+SHEET   51  5151 ILE C  14  ALA C  18  0
+SHEET   52  5252 HIS C  22  TRP C  27  0
+SHEET   53  5353 THR C  35  GLN C  39  0
+SHEET   54  5454 ASN C  46  VAL C  50  0
+SHEET   55  5555 MET C  56  ALA C  60  0
+SHEET   56  5656 ILE C  65  ASP C  69  0
+SHEET   57  5757 ILE C  78  TYR C  81  0
+SHEET   58  5858 ALA C  89  PHE C  93  0
+SHEET   59  5959 TRP C  99  GLY C 104  0
+SHEET   60  6060 CYS C 107  ASP C 113  0
+SHEET   61  6161 GLN C 122  GLN C 126  0
+SHEET   62  6262 ASN C 132  LEU C 136  0
+SHEET   63  6363 GLU C 142  ASP C 147  0
+SHEET   64  6464 GLY C 150  ASP C 156  0
+SHEET   65  6565 ASP C 160  GLN C 164  0
+SHEET   66  6666 THR C 174  ILE C 178  0
+SHEET   67  6767 TYR C 184  ASN C 189  0
+SHEET   68  6868 GLY C 192  THR C 200  0
+SHEET   69  6969 GLN C 209  PRO C 217  0
+SHEET   70  7070 LEU C 224  PHE C 228  0
+SHEET   71  7171 LEU C 234  SER C 239  0
+SHEET   72  7272 GLN C 242  ARG C 248  0
+SHEET   73  7373 MET C 255  SER C 259  0
+SHEET   74  7474 TRP C 274  PHE C 278  0
+SHEET   75  7575 TYR C 284  SER C 289  0
+SHEET   76  7676 ASN C 292  TRP C 297  0
+SHEET   77  7777 LYS C 305  TYR C 308  0
+SHEET   78  7878 VAL C 316  ASN C 321  0
+
+SHEET   84  8484 LYS D 104  ILE D 106  0
+SHEET   85  8585 THR D 174  TYR D 180  0
+SHEET   86  8686 MET D 193  MET D 198  0
+SHEET   87  8787 TYR D 230  HIS D 233  0
+SHEET   88  8888 THR D 261  GLU D 266  0
+SHEET    1 AA2 4 GLY D 288  VAL D 294  0
+SHEET    2 AA2 4 LEU D 279  ALA D 285 -1  N  ALA D 285   O  GLY D 288
+SHEET    3 AA2 4 GLU D 348  ARG D 353  1  O  LEU D 351   N  ASN D 284
+SHEET    4 AA2 4 TYR D 323  LYS D 327 -1  N  GLU D 326   O  CYS D 350
+SHEET    1 AA3 7 ILE D 430  ASP D 433  0
+SHEET    2 AA3 7 LYS D 408  PRO D 413 -1  N  ILE D 411   O  ILE D 430
+SHEET    3 AA3 7 PHE D 396  ILE D 404 -1  N  GLN D 401   O  ASP D 412
+SHEET    4 AA3 7 LYS D 384  HIS D 392 -1  N  PHE D 386   O  LEU D 402
+SHEET    5 AA3 7 TYR D 463  SER D 470 -1  O  GLU D 469   N  SER D 389
+SHEET    6 AA3 7 HIS D 450  LEU D 458 -1  N  LEU D 455   O  LEU D 466
+SHEET    7 AA3 7 LEU D 437  SER D 447 -1  N  GLU D 444   O  ILE D 452
+
+SHEET    1   1 1 ILE D   6  ARG D  15  0
+SHEET    2   2 1 TRP D  22  LYS D  30  0
+SHEET    3   3 1 THR D  34  TYR D  38  0
+SHEET    4   4 1 ASN D  53  SER D  56  0
+SHEET    5   5 1 CYS D  60  THR D  65  0
+SHEET    6   6 1 THR D  72  GLN D  79  0
+SHEET    7   7 1 THR D  82  HIS D  89  0
+
+SHEET   89  8989 PHE E 150  LEU E 155  0
+SHEET   90  9090 GLY E 162  GLU E 169  0
+SHEET   91  9191 TYR E 175  LYS E 182  0
+SHEET   92  9292 LEU E 213  GLN E 218  0
+SHEET   93  9393 ARG E 222  GLU E 228  0
+SHEET   94  9494 LEU E 280  LEU E 282  0
+SHEET   95  9595 ILE E 288  ILE E 290  0
