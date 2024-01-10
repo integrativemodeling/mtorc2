@@ -33,17 +33,21 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--output_dir", type=str, required=True)
     parser.add_argument("--param_file", type=str, required=True)
-    parser.add_argument("--res_per_comp", type=int, required=True)
-    parser.add_argument("--flex", type=int, required=True)
-    parser.add_argument("--sym", type=int, required=True)
+    parser.add_argument("--flex", action="store_true")
+    parser.add_argument("--sym", action="store_true")
+    parser.add_argument("--akt_tail", action="store_true")
+    parser.add_argument("--phos_res", type=int)
     parser.add_argument("--xls", type=str)
     parser.add_argument("--map", type=str)
-    parser.add_argument("--em_w", type=int, required=True)
-    parser.add_argument("--ev", type=int, required=True)
-    parser.add_argument("--conn", type=int, required=True)
-    parser.add_argument("--shuffle", type=int, required=True)
+    parser.add_argument("--em_w", type=int)
+    parser.add_argument("--ev", action="store_true")
+    parser.add_argument("--conn", action="store_true")
+    parser.add_argument("--shuffle", action="store_true")
     parser.add_argument("--n_frames", type=int, required=True)
     args = parser.parse_args()
+
+    if args.phos_res and not args.akt_tail:
+        raise RuntimeError("phos_res cannot be used without akt_tail")
 
     params.write_params(vars(args), Path(args.output_dir, "params.txt"))
 
@@ -61,7 +65,7 @@ if __name__ == "__main__":
 
     clones = dict()
     mols = dict()
-    subunits = list(set(param_df["subunit"]))
+    subunits = ["MTOR", "RICTOR", "MLST8", "MSIN1", "AKT1"]
     for subunit in subunits:
         print(subunit)
         subunit_row_ids = list(param_df[param_df["subunit"] == subunit].index)
@@ -77,15 +81,16 @@ if __name__ == "__main__":
 
         print(subunit_row_ids)
         for row_id in subunit_row_ids:
-            name = param_df.iloc[row_id, param_df.columns.get_loc("name")]
-            pdb_file = Path(param_df.iloc[row_id, param_df.columns.get_loc("pdb_file")])
-            pdb_chain = param_df.iloc[row_id, param_df.columns.get_loc("pdb_chain")]
-            start_pdb = param_df.iloc[row_id, param_df.columns.get_loc("start_pdb")]
-            end_pdb = param_df.iloc[row_id, param_df.columns.get_loc("end_pdb")]
-            offset = param_df.iloc[row_id, param_df.columns.get_loc("offset")]
-            em_prefix = param_df.iloc[row_id, param_df.columns.get_loc("em_prefix")]
-
+            name = param_df.iloc[row_id]["name"]
+            pdb_file = Path(param_df.iloc[row_id]["pdb_file"])
+            pdb_chain = param_df.iloc[row_id]["pdb_chain"]
+            start_pdb = param_df.iloc[row_id]["start_pdb"]
+            end_pdb = param_df.iloc[row_id]["end_pdb"]
+            offset = int(param_df.iloc[row_id]["offset"])
+            em_prefix = param_df.iloc[row_id]["em_prefix"]
+            res_per_comp = int(param_df.iloc[row_id]["res_per_comp"])
             print(name, pdb_file, pdb_chain, start_pdb, end_pdb, offset, em_prefix)
+
             atom_res = mol.add_structure(
                 pdb_fn=str(pdb_file),
                 chain_id=pdb_chain,
@@ -98,7 +103,7 @@ if __name__ == "__main__":
             if type(em_prefix) == str:
                 mol.add_representation(
                     residues=atom_res,
-                    density_residues_per_component=int(args.res_per_comp),
+                    density_residues_per_component=res_per_comp,
                     density_prefix=str(em_prefix),
                     density_force_compute=False,
                     resolutions=[1,10],
@@ -115,7 +120,6 @@ if __name__ == "__main__":
             if subunit == "AKT1":
                 print(mol.get_non_atomic_residues())
                 flex_res = list(mol.get_non_atomic_residues())[:22]
-                print(flex_res)
             else:
                 flex_res = list(mol.get_non_atomic_residues())
 
@@ -124,6 +128,26 @@ if __name__ == "__main__":
                 resolutions=[10],
                 color=color,
                 setup_particles_as_densities=False
+            )
+
+        if args.akt_tail and subunit == "AKT1":
+            # Add any residues past >425 that aren't already represented.
+            # Have to hard code these numbers in.
+            akt_tail = mols["AKT1"].residue_range(
+                a=str(426),
+                b=str(480)
+            )
+
+            print(len(akt_tail))
+
+            akt_tail_flex = [res for res in akt_tail if res not in mol.get_atomic_residues()]
+
+            print(len(akt_tail_flex))
+
+            mol.add_representation(
+                akt_tail_flex,
+                resolutions=[1],
+                color=color
             )
 
         print(subunit, len(mol.get_residues()))
@@ -150,13 +174,12 @@ if __name__ == "__main__":
             copies.append(clones[subunit])
 
         subunit_row_ids = list(param_df[param_df["subunit"] == subunit].index)
-
         for row_id in subunit_row_ids:
-            rb_start = param_df.iloc[row_id, param_df.columns.get_loc("rb_start")]
-            rb_end = param_df.iloc[row_id, param_df.columns.get_loc("rb_end")]
-            rb_trans = param_df.iloc[row_id, param_df.columns.get_loc("rb_trans")]
-            rb_rot = param_df.iloc[row_id, param_df.columns.get_loc("rb_rot")]
-            non_rigid_trans = 5
+            rb_start = param_df.iloc[row_id]["rb_start"]
+            rb_end = param_df.iloc[row_id]["rb_end"]
+            rb_trans = param_df.iloc[row_id]["rb_trans"]
+            rb_rot = param_df.iloc[row_id]["rb_rot"]
+            non_rigid_trans = param_df.iloc[row_id]["flex_trans"]
 
             for copy in copies:
                 rigid_parts = copy.residue_range(
@@ -165,11 +188,6 @@ if __name__ == "__main__":
                 )
 
                 non_rigid_parts = [res for res in copy.get_non_atomic_residues() if res in rigid_parts]
-
-                if copy == mol:
-                    print(subunit, rb_start, rb_end)
-                    print(rigid_parts)
-                    print(non_rigid_parts)
 
                 rb_movers, rb = dof.create_rigid_body(
                     rigid_parts=rigid_parts,
@@ -192,6 +210,21 @@ if __name__ == "__main__":
             )
             cr.add_to_model()
             output_objects.append(cr)
+
+    print("args.akt_tail: {}".format(args.akt_tail))
+    if args.akt_tail:
+        print("AKT tail restraints")
+        for i in range(425,480):
+            conn_r = IMP.pmi.restraints.basic.DistanceRestraint(
+                root_hier=root_hier,
+                tuple_selection1=(i,i,"AKT1",0),
+                tuple_selection2=(i+1,i+1,"AKT1",0),
+                distancemin=3.5,
+                distancemax=3.5,
+                weight=100
+            )
+            conn_r.add_to_model()
+            output_objects.append(conn_r)
 
     # EXCLUDED VOLUME
     ev_objects = list()
@@ -284,6 +317,18 @@ if __name__ == "__main__":
         gem.add_to_model()
         gem.set_label("BayesianEM")
         output_objects.append(gem)
+
+    # ACTIVE SITE
+    if args.phos_res:
+        active_site_dr = IMP.pmi.restraints.basic.DistanceToPointRestraint(
+            root_hier=s.get_hierarchy(),
+            tuple_selection=(args.phos_res, args.phos_res, "AKT1", 0),
+            anchor_point=IMP.algebra.Vector3D(160.938, 122.210, 187.189),
+            radius=0,
+            kappa=1
+        )
+        active_site_dr.add_to_model()
+        output_objects.append(active_site_dr)
 
     # SHUFFLE
     if args.shuffle:
