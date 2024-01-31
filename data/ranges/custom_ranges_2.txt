@@ -1,1 +1,0 @@
-density_custom_ranges={"CRIM":[(1,122,"CRIM")],"RBD":[(1,74,"RBD")],"MSIN1PH":[(1,141,"MSIN1PH")],"KINASE":[(1,300,"KINASE")]}

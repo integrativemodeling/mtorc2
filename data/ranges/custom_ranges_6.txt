@@ -1,1 +1,0 @@
-density_custom_ranges={"MTOR":[(1,2549,"MTOR")], "RICTOR":[(1,1708,"RICTOR")], "MLST8":[(1,324,"MLST8")], "MSIN1":[(1,157,"MSIN1")], "CRIM":[(1,122,"CRIM")], "RBD":[(1,102,"RBD")], "MSIN1PH":[(1,141,"MSIN1PH")], "KINASE":[(1,340,"KINASE")], "AKT1PH":[(1,145,"AKT1PH")]}
