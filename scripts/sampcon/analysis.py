@@ -42,24 +42,37 @@ def analyze_trajectories(
         nskip=25
     )
 
-    AT.set_analyze_XLs_restraint(
-        XLs_cutoffs=XLs_cutoffs,
-        ambiguous_XLs_restraint=True,
-        get_nuisances=True
-    )
-    AT.set_analyze_Distance_restraint()
-    AT.set_analyze_Excluded_volume_restraint()
-    AT.set_analyze_EM_restraint()
+    if "XLs_sum" in cluster_on:
+        print("Setting XLs restraint")
+        AT.set_analyze_XLs_restraint(
+            XLs_cutoffs=XLs_cutoffs,
+            ambiguous_XLs_restraint=True,
+            get_nuisances=True
+        )
+        AT.get_psi_stats()
+
+    if "DR_sum" in cluster_on:
+        print("Setting DR restraint")
+        AT.set_analyze_Distance_restraint()
+
+    if "EV_sum" in cluster_on:
+        print("Setting EV restraint")
+        AT.set_analyze_Excluded_volume_restraint()
+
+    if "EM3D_BayesianEM" in cluster_on:
+        print("Setting EM3D_BayesianEM restraint")
+        AT.set_analyze_EM_restraint()
 
     AT.read_stat_files()
     AT.write_models_info()
-    AT.get_psi_stats()
 
     AT.hdbscan_clustering(
         cluster_on,
         min_cluster_size=min_clust
     )
-    AT.summarize_XLs_info()
+
+    if "XLs_sum" in cluster_on:
+        AT.summarize_XLs_info()
 
 
 """

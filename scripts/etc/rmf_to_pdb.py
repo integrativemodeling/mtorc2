@@ -135,7 +135,7 @@ def rmf_to_pdb(
     if add_ss:
         shutil.copy(pdb_file, tmp_file)
         add_secondary_structure(
-            ss_file=Path(Path.home(), "mtorc2/data/pdb/secondary_structure_exp.pdb"),
+            ss_file=Path(Path.home(), "mtorc2/data/ss/1113_mod.pdb"),
             orig_file=tmp_file,
             merged_file=pdb_file
         )
@@ -143,7 +143,7 @@ def rmf_to_pdb(
 
 
 if __name__ == "__main__":
-    cluster_dir = Path("/wynton/group/sali/mhancock/mtorc2/dev/09_conn_akt_tail_2/analysis/1/sampcon_-1/1/cluster.0")
+    cluster_dir = Path("/wynton/group/sali/mhancock/mtorc2/analysis/141/0/sampcon_-1/0/cluster.0")
     print(cluster_dir)
     rmf_to_pdb(
         rmf_file=Path(cluster_dir, "cluster_center_model.rmf3"),

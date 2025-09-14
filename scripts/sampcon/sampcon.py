@@ -199,6 +199,7 @@ if __name__ == "__main__":
     parser.add_argument("--symm_file", type=str, required=False)
     parser.add_argument("--copy", type=int, required=False)
     parser.add_argument("--thresh", type=int, required=False)
+    parser.add_argument("--extract_only", action="store_true")
     args = parser.parse_args()
 
     analysis_dir = Path(args.analysis_dir)
@@ -219,17 +220,6 @@ if __name__ == "__main__":
     job_dir = Path(sampcon_dir, args.job_id)
     gsms_dir = Path(sampcon_dir, "gsms/{}".format(args.gsms_dir_name))
 
-    # # #
-    if job_dir.exists():
-        shutil.rmtree(job_dir)
-    # if gsms_dir.exists():
-    #     shutil.rmtree(gsms_dir)
-    # # #
-
-    # # Raise an error if the job_dir already exists.
-    job_dir.mkdir(exist_ok=False)
-    params.write_params(vars(args), Path(job_dir, "params.txt"))
-
     if not gsms_dir.exists():
         print("Creating good scoring models directory")
         gsms_dir.mkdir()
@@ -244,22 +234,36 @@ if __name__ == "__main__":
     else:
         print("Good scoring models directory found")
 
-    # Need to copy over 3 files from an older sampcon run. The pre-computed distance matrix is used in clustering. Sampling precision statistics and Chi square grid statistics are for constructing plots.
-    if type(args.copy) == int:
-        copy_from_dir = Path(sampcon_dir, str(args.copy))
-        orig_files = [Path(copy_from_dir, "Distances_Matrix.data.npy"), Path(copy_from_dir, "mtorc2.Sampling_Precision_Stats.txt"), Path(copy_from_dir, "mtorc2.ChiSquare_Grid_Stats.txt")]
+    if not args.extract_only:
+        # # #
+        if job_dir.exists():
+            shutil.rmtree(job_dir)
+        # if gsms_dir.exists():
+        #     shutil.rmtree(gsms_dir)
+        # # #
 
-        for orig_file in orig_files:
-            new_file = Path(job_dir, orig_file.name)
-            print(orig_file, new_file)
-            shutil.copy(orig_file, new_file)
+        # # Raise an error if the job_dir already exists.
+        job_dir.mkdir(exist_ok=False)
+        params.write_params(vars(args), Path(job_dir, "params.txt"))
 
-    os.chdir(job_dir)
-    sampcon(
-        analysis_dir=analysis_dir,
-        gsms_dir=gsms_dir,
-        mode=mode,
-        thresh=args.thresh,
-        range_file=range_file,
-        symm_file=args.symm_file
-    )
+        # Need to copy over 3 files from an older sampcon run. The pre-computed distance matrix is used in clustering. Sampling precision statistics and Chi square grid statistics are for constructing plots.
+        if type(args.copy) == int:
+            copy_from_dir = Path(sampcon_dir, str(args.copy))
+            orig_files = [Path(copy_from_dir, "Distances_Matrix.data.npy"), Path(copy_from_dir, "mtorc2.Sampling_Precision_Stats.txt"), Path(copy_from_dir, "mtorc2.ChiSquare_Grid_Stats.txt")]
+
+            for orig_file in orig_files:
+                new_file = Path(job_dir, orig_file.name)
+                print(orig_file, new_file)
+                shutil.copy(orig_file, new_file)
+
+        os.chdir(job_dir)
+        sampcon(
+            analysis_dir=analysis_dir,
+            gsms_dir=gsms_dir,
+            mode=mode,
+            thresh=args.thresh,
+            range_file=range_file,
+            symm_file=args.symm_file
+        )
+    else:
+        print("Extracting GSMs only")

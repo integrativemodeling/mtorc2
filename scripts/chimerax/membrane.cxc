@@ -2,3 +2,13 @@ open /Users/matthew/Documents/mtorc2/data/models/submission_3/136_2_1/membrane_b
 open /Users/matthew/Documents/mtorc2/data/models/submission_3/136_2_1/membrane_top.pdb
 size #1 atomRadius 3
 size #2 atomRadius 3
+
+
+transparency #2/D:1-382/I:1-382 50 ribbons
+transparency #2/E:144-426/J:144-426 50 ribbons
+
+color #2/D:1-382/I:1-382 grey
+color #2/E:144-426/J:144-426 grey
+
+color #2/D:383-522/I:383-522 #C73131
+color #2/E:1-143/J:1-143 #8B78A8

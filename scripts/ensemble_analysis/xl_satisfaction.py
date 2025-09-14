@@ -136,13 +136,9 @@ def check_ambiguity(
 
 
 def get_cluster_gsms(
-        sampcon_job_dir,
-        cluster,
+        cluster_dir,
         gsms_dir
 ):
-    # print(sampcon_job_dir)
-    cluster_dir = Path(sampcon_job_dir, "cluster.{}".format(cluster))
-
     # Script needs to read in the number of structures contained in the A.rmf3 file because the structures in sampcon cluster A are indexed between 0:N_A-1 while structures in cluster B are indexed between N_A:N_A+N_B-1.
     with open(Path(gsms_dir, "A.txt"), 'r') as fp:
         N_A = len(fp.readlines())
@@ -151,7 +147,7 @@ def get_cluster_gsms(
     # print(len(xl_df))
     # print(xl_df.head())
 
-    samp_clust_file = Path(sampcon_job_dir, "cluster.{}.all.txt".format(cluster))
+    samp_clust_file = Path(str(cluster_dir)+".all.txt")
     samp_clust_df = pd.read_csv(samp_clust_file, header=None)
     # samp_clust_df = samp_clust_df.iloc[:1]
 
@@ -207,8 +203,7 @@ def xl_satisfaction_cluster(
         )
     else:
         gsms_files = get_cluster_gsms(
-            sampcon_job_dir=sampcon_job_dir,
-            cluster=cluster,
+            cluster_dir=Path(sampcon_job_dir, "cluster.{}".format(cluster)),
             gsms_dir=gsms_dir
         )
 
@@ -270,6 +265,7 @@ if __name__ == "__main__":
     xl_files = list()
     xl_files.append((Path(Path.home(), "mtorc2/data/xlms/csvs/dss.csv"), "dss", 35))
     xl_files.append((Path(Path.home(), "mtorc2/data/xlms/csvs/edc.csv"), "edc", 16))
+    xl_files.append((Path(Path.home(), "mtorc2/data/xlms/csvs/edc_intra.csv"), "edc", 16))
 
     sampcon_job_dir = Path("/wynton/group/sali/mhancock/mtorc2/analysis/136/2/sampcon_-1/1")
     cluster = 0
@@ -304,7 +300,7 @@ if __name__ == "__main__":
 
     for i in range(len(xl_df)):
         prot1, res1, prot2, res2, type, cutoff = xl_df.iloc[i,0:6]
-        print(prot1, res1, prot2, res2, type, cutoff)
+        # print(prot1, res1, prot2, res2, type, cutoff)
 
     xl_df = xl_satisfaction_cluster(
         sampcon_job_dir=sampcon_job_dir,
@@ -315,7 +311,7 @@ if __name__ == "__main__":
 
     if cluster_dir:
         rmf_file = Path(cluster_dir, "cluster_center_model.rmf3")
-        xl_file = Path(cluster_dir, "xls.csv")
+        xl_file = Path(cluster_dir, "xls_new.csv")
 
         # If testing against a cluster, need to check the centroid structure for ambiguous xl distances for visualization.
         xl_df = check_ambiguity(
