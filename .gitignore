@@ -1,12 +1,85 @@
-.vscode
-**/.DS_Store
-.DS_Store
-*/.DS_Store
-
+## PROJECT SPECIFIC
 **/tmp
 tmp/*
 data/em/maps/**
 data/em/comps/**
 data/models/**
 dev/07_em_score/**
+
+## GENERAL
+# macOS
+**/.DS_Store
 .DS_Store
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Compiled extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+wheelhouse/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Testing / coverage
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.pytest_cache/
+.cache/
+hypothesis/
+nosetests.xml
+*.cover
+*.py,cover
+
+# Type checkers
+.mypy_cache/
+.pyre/
+.pytype/
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# Project-specific
+.cursor/
+
+# Data
+*.pkl
