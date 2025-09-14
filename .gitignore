@@ -6,6 +6,12 @@ data/em/comps/**
 data/models/**
 dev/07_em_score/**
 
+*.cif
+
+*.numbers
+*.mrc
+*.cxs
+
 ## GENERAL
 # macOS
 **/.DS_Store
