@@ -3,7 +3,7 @@
 tmp/*
 data/em/maps/**
 data/em/comps/**
-data/models/**
+data/submission_models/**
 dev/07_em_score/**
 
 *.cif
